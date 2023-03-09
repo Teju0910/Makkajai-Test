@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>MAKKANAI TEST</h1>
+    <br />
+    <h5>Problem 1: Sales Tax
+    </h5>
+</body>
+
+</html>
+
+<Script>
+    // Basic sales tax is applicable at a rate of 10% on all goods, except books, food,
+    // and medical products that are exempt.Import duty is an additional sales tax
+    // applicable on all imported goods at a rate of 5 %, with no exemptions.
+
+    // When I purchase items I receive a receipt which lists the name of all the items
+    // and their price(including tax), finishing with the total cost of the items,
+    // and the total amounts of sales taxes paid.The rounding rules for sales tax are
+    // that for a tax rate of n %, a shelf price of p contains(np / 100 rounded up to
+    // the nearest 0.05) amount of sales tax.
+
+
+
+    const products = {
+        "book": { price: 12.49, exempted: true },
+        "chocolate bar": { price: 0.85, exempted: true },
+        "imported box of chocolates": { price: 10.00, exempted: true },
+        "packet of headache pills": { price: 9.75, exempted: true },
+        "box of imported chocolates": { price: 11.25, exempted: true },
+        "music CD": { price: 14.99, exempted: false },
+        "imported bottle of perfume": { price: 47.50, exempted: false },
+        "bottle of perfume": { price: 18.99, exempted: false },
+    };
+
+    // Griven tax rates
+    const basicSalesTax = 0.1;
+    const importGoodTax = 0.05;
+
+    // (np / 100 rounded up to the nearest 0.05)
+    function roundSalesTax(tax) {
+        return Math.ceil(tax * 20) / 20;
+    }
+
+    // Calculate the taxes for a given product
+    function calculateTaxOfProduct(item, product) {
+        let tax = 0;
+
+        // Calculate basic sales tax 
+        if (!product.exempted) {
+            tax += product.price * basicSalesTax;
+        }
+
+        // Calculate import tax 
+        if (item.name.includes("imported")) {
+            tax += product.price * importGoodTax;
+        }
+
+        // Round up to the nearest 0.05
+        tax = roundSalesTax(tax);
+        return tax;
+    }
+
+    // Function to print the tax
+    function printSalesTax(items) {
+        let total = 0;
+        let totalTax = 0;
+
+        items.forEach(item => {
+            const product = products[item.name];
+            const tax = calculateTaxOfProduct(item, product);
+            const priceWithTax = item.price + (tax * item.quantity);
+            console.log(`${item.quantity} ${item.name}: ${priceWithTax.toFixed(2)}`);
+            total += priceWithTax;
+            totalTax += tax;
+        });
+
+        console.log(`Sales Taxes: ${totalTax.toFixed(2)}`);
+        console.log(`Total: ${total.toFixed(2)}`);
+    }
+
+    // Given Inputs
+    const input1 = [
+        { quantity: 2, name: "book", price: 12.49 },
+        { quantity: 2, name: "music CD", price: 14.99 },
+        { quantity: 1, name: "chocolate bar", price: 0.85 },
+    ];
+
+    const input2 = [
+        { quantity: 1, name: "imported box of chocolates", price: 10.00 },
+        { quantity: 1, name: "imported bottle of perfume", price: 47.50 },
+    ];
+
+    const input3 = [
+        { quantity: 1, name: "imported bottle of perfume", price: 47.50 },
+        { quantity: 1, name: "bottle of perfume", price: 18.99 },
+        { quantity: 1, name: "packet of headache pills", price: 9.75 },
+        { quantity: 1, name: "box of imported chocolates", price: 11.25 },
+    ];
+
+    // Print the tax for the inputs
+    console.log("Output 1:-");
+    printSalesTax(input1);
+
+    console.log("Output 2:-");
+    printSalesTax(input2);
+
+    console.log("Output 3:-");
+    printSalesTax(input3);
+
+</Script>
