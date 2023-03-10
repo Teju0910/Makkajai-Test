@@ -76,7 +76,8 @@
 
         items.forEach(item => {
             const product = products[item.name];
-            const tax = calculateTaxOfProduct(item, product);
+            let tax = calculateTaxOfProduct(item, product);
+            tax = tax * item.quantity;
             const priceWithTax = item.price + (tax * item.quantity);
             console.log(`${item.quantity} ${item.name}: ${priceWithTax.toFixed(2)}`);
             total += priceWithTax;
